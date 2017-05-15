@@ -21,8 +21,8 @@ if (process.env.GCM_SENDER_ID && process.env.GCM_API_KEY) {
 var api = new ParseServer({
   databaseURI: databaseUri || 'mongodb://heroku_rl3t4f4m:vu5teqbva0er0kssjnrm31195k@ds143071.mlab.com:43071/heroku_rl3t4f4m',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
-  appId: process.env.APP_ID || 'aUwHAikvBasQxZmUtNxyEdsBJa',
-  masterKey: process.env.MASTER_KEY || 'eDir3V5ouqkxCdga9glpMzVt0jO', //Add your master key here. Keep it secret!
+  appId: process.env.APP_ID || 'LHkNxyEd8sTQmUtNxyEdsBJaUv',
+  masterKey: process.env.MASTER_KEY || 'kBxQmIsA43P9Oo73Sa1n9', //Add your master key here. Keep it secret!
   serverURL: process.env.SERVER_URL || 'https://yourturnapp.herokuapp.com/parse',  // Don't forget to change to https if needed
   push: pushConfig,
   liveQuery: {
