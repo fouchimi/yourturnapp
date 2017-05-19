@@ -3,13 +3,13 @@ Parse.Cloud.define('pushChannel', function(req, res) {
 
   var title = req.title;
   var message = req.alert;
-  var friendList = req.recipients;
+  var recipient = req.recipients;
 
-  var recipients[] = friendList.split(",");
+  //var recipients[] = friendList.split(",");
 
   // Find devices associated with the recipient user
   var pushQuery = new Parse.Query(Parse.Installation);
-  pushQuery.containedIn("username", recipients);
+  pushQuery.containedIn("username", recipient);
 
   // Send the push notification to results of the query
   Parse.Push.send({
