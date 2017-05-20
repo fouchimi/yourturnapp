@@ -1,6 +1,6 @@
 
 Parse.Cloud.define('pushChannel', function(request, response) {
-var params = request.params;
+  var params = request.params;
   var customData = params.customData;
 
   if (!customData) {
