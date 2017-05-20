@@ -3,12 +3,12 @@ Parse.Cloud.define('pushChannel', function(request, response) {
 
   // request has 2 parameters: params passed by the client and the authorized user
   var params = request.params;
-  var user = request.user;
-
-  console.log(params);
 
   var message = params.message;
   var customData = params.customData;
+
+  console.log("message: " + message);
+  console.log("customData: " + customData);
 
   // use to custom tweak whatever payload you wish to send
   var pushQuery = new Parse.Query(Parse.Installation);
