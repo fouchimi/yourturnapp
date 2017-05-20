@@ -1,25 +1,32 @@
 
-Parse.Cloud.define('pushChannel', function(req, res) {
+Parse.Cloud.define('pushChannel', function(request, response) {
 
-  var title = req.title;
-  var message = req.alert;
-  var recipient = req.recipients;
+  // request has 2 parameters: params passed by the client and the authorized user
+  var params = request.params;
+  var user = request.user;
 
-  //var recipients[] = friendList.split(",");
+  var message = params.message;
+  var customData = params.customData;
 
-  // Find devices associated with the recipient user
+  // use to custom tweak whatever payload you wish to send
   var pushQuery = new Parse.Query(Parse.Installation);
-  pushQuery.containedIn("username", recipient);
+  pushQuery.equalTo("deviceType", "android");
 
-  // Send the push notification to results of the query
+  var payload = { "alert": message,
+                  "customdata": customData
+                };
+  };
+
+  // Note that useMasterKey is necessary for Push notifications to succeed.
+
   Parse.Push.send({
-    where: pushQuery,
-    data: {
-      alert: message
-    }
-  }).then(function() {
-      response.success("Push was sent successfully.")
-  }, function(error) {
-      response.error("Push failed to send with error: " + error.message);
-  });
+  where: pushQuery,      // for sending to a specific channel
+  data: payload,
+  }, { success: function() {
+     console.log("#### PUSH OK");
+  }, error: function(error) {
+     console.log("#### PUSH ERROR" + error.message);
+  }, useMasterKey: true});
+
+  response.success('success');
 });
