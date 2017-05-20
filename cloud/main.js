@@ -5,6 +5,8 @@ Parse.Cloud.define('pushChannel', function(request, response) {
   var params = request.params;
   var user = request.user;
 
+  console.log(params);
+
   var message = params.message;
   var customData = params.customData;
 
