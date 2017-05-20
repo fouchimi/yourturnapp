@@ -1,18 +1,15 @@
 
 Parse.Cloud.define('pushChannel', function(request, response) {
   var params = request.params;
-  var customData = params.customData;
+  var receiver = params.receiver;
 
-  if (!customData) {
-    response.error("Missing customData!")
-  }
-
-  var sender = JSON.parse(customData).sender;
-  var query = new Parse.Query(Parse.Installation);
-  query.equalTo("installationId", sender);
+  
+  var pushQuery = new Parse.Query(Parse.Installation);
+  pushQuery.equalTo("username", receiver);
+  pushQuery.equalTo("deviceType", "android");
 
   Parse.Push.send({
-  where: query,
+  where: pushQuery,
   // Parse.Push requires a dictionary, not a string.
   data: {"alert": "The Giants scored!"},
   }, { success: function() {
