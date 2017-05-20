@@ -2,11 +2,13 @@
 Parse.Cloud.define('pushChannel', function(request, response) {
   var params = request.params;
   var receiver = params.receiver;
+  var receiverId = params.receiverId;
 
   
   var pushQuery = new Parse.Query(Parse.Installation);
   pushQuery.equalTo("username", receiver);
   pushQuery.equalTo("deviceType", "android");
+  pushQuery.equalTo("installationId", receiverId);
 
   Parse.Push.send({
   where: pushQuery,
