@@ -7,6 +7,15 @@ var path = require('path');
 
 var databaseUri = process.env.DATABASE_URI || process.env.MONGODB_URI;
 
+var pushConfig = {};
+
+if(process.env.GCM_SENDER_ID && process.env.GCM_API_KEY){
+  pushConfig['android'] = {
+    senderId: process.env.GCM_SENDER_ID || '',
+    apiKey: process.env.GCM_API_KEY || ''
+  };
+}
+
 if (!databaseUri) {
   console.log('DATABASE_URI not specified, falling back to localhost.');
 }
@@ -17,12 +26,7 @@ var api = new ParseServer({
   appId: process.env.APP_ID || '3L3nrFqVD2Ilg_6RXuMusgVba0_uARi6E',
   masterKey: process.env.MASTER_KEY || 'sMVHq9lgSmQUtNxyEdsBJaUvZUkqB7eKg', //Add your master key here. Keep it secret!
   serverURL: process.env.SERVER_URL || 'http://yourturnapp.herokuapp.com/parse',  // Don't forget to change to https if needed
-  push: {
-     android: {
-        senderId: '1098418675632',
-        apiKey: 'AIzaSyDjYbJSqNmIMAWV2t-YWyW1Cgg97-x2jMo'
-     }
-  },
+  push: pushConfig,
   liveQuery: {
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
   }
