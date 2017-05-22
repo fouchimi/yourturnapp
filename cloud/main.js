@@ -1,9 +1,9 @@
 
 Parse.Cloud.define('pushChannel', function(request, response) {
   var params = request.params;
-  var senderName = params.title;
+  var senderName = params.alert;
   var senderId = params.senderId;
-  var message = params.alert;
+  var message = params.message;
   var recipients = params.recipients;
   var friendsNumber = params.count;
 
