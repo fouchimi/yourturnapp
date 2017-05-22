@@ -18,7 +18,7 @@ Parse.Cloud.define('pushChannel', function(request, response) {
      pushQuery.equalTo("device_id", recipients);
 
   }
-  var payload = {"alert": message, "title": senderName + " sent you a message" };
+  var payload = {"title": senderId + " sent you a message", "alert": message};
 
   Parse.Push.send({
   where: pushQuery,
