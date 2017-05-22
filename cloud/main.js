@@ -14,9 +14,10 @@ Parse.Cloud.define('pushChannel', function(request, response) {
   if(friendsNumber > 1) {
      var[] friendList = recipients.split(",");
      pushQuery.containedIn("device_id", friendList);
+     console.log("I am here guy ...");
   }else {
      pushQuery.equalTo("device_id", recipients);
-
+     console.log("only one user");
   }
   var payload = {"data": {"alert": message, "title": senderName + " send you a message" } };
 
