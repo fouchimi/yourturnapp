@@ -30,9 +30,10 @@ Parse.Cloud.define('senderChannel', function(request, response) {
   }, useMasterKey: true});
 
   response.success('success');
-},
+});
 
-'receiverChannel', function(request, response) {
+
+Parse.Cloud.define('receiverChannel', function(request, response) {
   var params = request.params;
   var recipientId = params.recipientId;
 
@@ -45,11 +46,11 @@ Parse.Cloud.define('senderChannel', function(request, response) {
   Parse.Push.send({
     where: replyQuery,
     data : payload,
-    },{ success: function(){
+    }, { success: function(){
        console.log("### PUSH REPLY OK");
     }, error: function(error){
        console.log("### PUSH REPLY ERROR" + error.message);
-    }, useMasterKey, true });
+    }, useMasterKey: true });
 
     response.success('success');
 
