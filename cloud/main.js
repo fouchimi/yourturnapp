@@ -11,7 +11,11 @@ Parse.Cloud.define('pushChannel', function(request, response) {
   pushQuery.equalTo("deviceType", "android");
   //containedIn
   if(friendsNumber > 1) {
+     var friendListArray = [];
      var friendList = recipients.split(",");
+     for(var i in friendList) {
+       friendListArray.push(friendList[i]);
+     }
      pushQuery.containedIn("device_id", friendList);
   }else {
      pushQuery.equalTo("device_id", recipients);
