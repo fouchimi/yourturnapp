@@ -1,4 +1,3 @@
-
 Parse.Cloud.define('senderChannel', function(request, response) {
   var params = request.params;
   var senderId = params.senderId;
@@ -6,7 +5,7 @@ Parse.Cloud.define('senderChannel', function(request, response) {
   var recipients = params.recipients;
   var count = params.friendCount;
 
-  
+
   var pushQuery = new Parse.Query(Parse.Installation);
   if(count > 1) {
      var friendListArray = [];
@@ -31,10 +30,9 @@ Parse.Cloud.define('senderChannel', function(request, response) {
   }, useMasterKey: true});
 
   response.success('success');
-});
+},
 
-
-Parse.Cloud.define('receiverChannel', function(request, response) {
+'receiverChannel', function(request, response) {
   var params = request.params;
   var recipientId = params.recipientId;
 
@@ -56,6 +54,4 @@ Parse.Cloud.define('receiverChannel', function(request, response) {
     response.success('success');
 
 });
-
-
 
