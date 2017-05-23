@@ -18,7 +18,7 @@ Parse.Cloud.define('senderChannel', function(request, response) {
      pushQuery.equalTo("device_id", recipients);
   }
   pushQuery.equalTo("deviceType", "android");
-  var payload = {"title": senderId + " sent you a message", "alert": message};
+  var payload = {"title": senderId + " sent you a message", "alert": message, "senderId": senderId};
 
   Parse.Push.send({
   where: pushQuery,
@@ -35,13 +35,14 @@ Parse.Cloud.define('senderChannel', function(request, response) {
 
 Parse.Cloud.define('receiverChannel', function(request, response) {
   var params = request.params;
+  var targetId = params.targetId;
   var recipientId = params.recipientId;
 
   var replyQuery = new Parse.Query(Parse.Installation);
   replyQuery.equalTo("deviceType", "android");
-  replyQuery.equalTo("device_id", recipientId);
+  replyQuery.equalTo("device_id", targetId);
 
-  var payload = {"rec_id": recipientId};
+  var payload = {"rec_id": recipientId, "sender_id": targetId};
 
   Parse.Push.send({
     where: replyQuery,
