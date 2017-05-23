@@ -16,7 +16,7 @@ Parse.Cloud.define('pushChannel', function(request, response) {
      for(var i in friendList) {
        friendListArray.push(friendList[i]);
      }
-     pushQuery.containedIn("device_id", friendList);
+     pushQuery.containedIn("device_id", friendListArray);
   }else {
      pushQuery.equalTo("device_id", recipients);
 
