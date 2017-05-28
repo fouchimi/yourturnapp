@@ -5,8 +5,6 @@ Parse.Cloud.define('senderChannel', function(request, response) {
   var recipients = params.recipients;
   var count = params.friendCount;
 
-
-  var pushQuery = new Parse.Query(Parse.Installation);
   if(count > 1) {
      var friendListArray = sharedListArray = [];
      var friendList = recipients.split(",");
@@ -18,7 +16,8 @@ Parse.Cloud.define('senderChannel', function(request, response) {
      }
 
      for(var i=0; i < sharedListArray.length; i++) {
-       pushQuery.containedIn("device_id", friendListArray);
+       var pushQuery = new Parse.Query(Parse.Installation);
+       pushQuery.equalTo("device_id", friendListArray[i]);
        pushQuery.equalTo("deviceType", "android");
 
        Parse.Push.send({
@@ -33,6 +32,7 @@ Parse.Cloud.define('senderChannel', function(request, response) {
      }
 
   } else {
+     var pushQuery = new Parse.Query(Parse.Installation);
      pushQuery.equalTo("device_id", recipients);
      pushQuery.equalTo("deviceType", "android");
      Parse.Push.send({
