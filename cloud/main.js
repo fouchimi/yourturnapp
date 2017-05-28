@@ -37,7 +37,7 @@ Parse.Cloud.define('senderChannel', function(request, response) {
      pushQuery.equalTo("deviceType", "android");
      Parse.Push.send({
      where: pushQuery,
-     data: {"title": senderId, "alert": message, "senderId": senderId},
+     data: {"title": senderId, "alert": sharedValue, "senderId": senderId},
      }, { success: function() {
         console.log("#### PUSH OK");
      }, error: function(error) {
