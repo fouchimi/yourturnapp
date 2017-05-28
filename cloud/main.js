@@ -19,16 +19,24 @@ Parse.Cloud.define('senderChannel', function(request, response) {
        var pushQuery = new Parse.Query(Parse.Installation);
        pushQuery.equalTo("device_id", friendListArray[i]);
        pushQuery.equalTo("deviceType", "android");
-
-       Parse.Push.send({
-       where: pushQuery,
-       data: {"title": senderId, "alert": sharedListArray[i], "senderId": senderId},
-       }, { success: function() {
-          console.log("#### PUSH OK");
-       }, error: function(error) {
-          console.log("#### PUSH ERROR" + error.message);
-       }, useMasterKey: true});
-       response.success('success');
+       pushQuery.count({
+         success: function(number){
+           if(number > 0){
+             Parse.Push.send({
+               where: pushQuery,
+               data: {"title": senderId, "alert": sharedListArray[i], "senderId": senderId},
+             }, { success: function() {
+                console.log("#### PUSH OK");
+             }, error: function(error) {
+                console.log("#### PUSH ERROR" + error.message);
+             }, useMasterKey: true});
+             response.success('success');
+           }
+         },
+         error: function(error){
+          console.log("### ERROR" + error.message);
+         }
+       });
      }
 
   } else {
