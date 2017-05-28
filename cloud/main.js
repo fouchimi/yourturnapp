@@ -23,7 +23,7 @@ Parse.Cloud.define('senderChannel', function(request, response) {
 
        Parse.Push.send({
        where: pushQuery,
-       data: {"title": senderId + " sent you a message", "alert": sharedListArray[i], "senderId": senderId},
+       data: {"title": senderId, "alert": sharedListArray[i], "senderId": senderId},
        }, { success: function() {
           console.log("#### PUSH OK");
        }, error: function(error) {
@@ -37,7 +37,7 @@ Parse.Cloud.define('senderChannel', function(request, response) {
      pushQuery.equalTo("deviceType", "android");
      Parse.Push.send({
      where: pushQuery,
-     data: {"title": senderId + " sent you a message", "alert": message, "senderId": senderId},
+     data: {"title": senderId, "alert": message, "senderId": senderId},
      }, { success: function() {
         console.log("#### PUSH OK");
      }, error: function(error) {
