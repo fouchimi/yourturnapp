@@ -6,39 +6,29 @@ Parse.Cloud.define('senderChannel', function(request, response) {
   var count = params.friendCount;
 
   if(count > 1) {
-     var friendListArray = sharedListArray = [];
+     var friendListArray = sharedList = [];
      var friendList = recipients.split(",");
      var sharedValueList = sharedValue.split(",");
 
      for(var i in friendList) {
        friendListArray.push(friendList[i]);
-       sharedListArray.push(sharedValueList[i]);
+       sharedList.push(sharedValueList[i]);
      }
 
-     for(var i=0; i < sharedListArray.length; i++) {
+     sharedList.forEach(function(listItem, index){
        var pushQuery = new Parse.Query(Parse.Installation);
-       pushQuery.equalTo("device_id", friendListArray[i]);
+       pushQuery.equalTo("device_id", friendListArray[index]);
        pushQuery.equalTo("deviceType", "android");
-       pushQuery.count({
-         success: function(number){
-           if(number > 0){
-             Parse.Push.send({
-               where: pushQuery,
-               data: {"title": senderId, "alert": sharedListArray[i], "senderId": senderId},
-             }, { success: function() {
-                console.log("#### PUSH OK");
-             }, error: function(error) {
-                console.log("#### PUSH ERROR" + error.message);
-             }, useMasterKey: true});
-             response.success('success');
-           }
-         },
-         error: function(error){
-          console.log("### ERROR" + error.message);
-         }
-       });
-     }
-
+       Parse.Push.send({
+         where: pushQuery,
+         data: {"title": senderId, "alert": listItem, "senderId": senderId},
+       }, { success: function() {
+          console.log("#### PUSH OK");
+       }, error: function(error) {
+          console.log("#### PUSH ERROR" + error.message);
+       }, useMasterKey: true});
+       response.success('success');
+     });
   } else {
      var pushQuery = new Parse.Query(Parse.Installation);
      pushQuery.equalTo("device_id", recipients);
