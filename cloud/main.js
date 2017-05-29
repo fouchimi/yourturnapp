@@ -1,48 +1,36 @@
 Parse.Cloud.define('senderChannel', function(request, response) {
   var params = request.params;
   var senderId = params.senderId;
-  var sharedValue = params.msg;
+  var sharedValue = params.sharedValue;
   var recipients = params.recipients;
   var count = params.friendCount;
+
+var pushQuery = new Parse.Query(Parse.Installation);
+pushQuery.equalTo("deviceType", "android");
 
   if(count > 1) {
      var friendListArray = sharedList = [];
      var friendList = recipients.split(",");
-     var sharedValueList = sharedValue.split(",");
 
      for(var i in friendList) {
        friendListArray.push(friendList[i]);
-       sharedList.push(sharedValueList[i]);
      }
 
-     sharedList.forEach(function(listItem, index){
-       var pushQuery = new Parse.Query(Parse.Installation);
-       pushQuery.equalTo("device_id", friendListArray[index]);
-       pushQuery.equalTo("deviceType", "android");
-       Parse.Push.send({
-         where: pushQuery,
-         data: {"title": senderId, "alert": listItem, "senderId": senderId},
-       }, { success: function() {
-          console.log("#### PUSH OK");
-       }, error: function(error) {
-          console.log("#### PUSH ERROR" + error.message);
-       }, useMasterKey: true});
-       response.success('success');
-     });
+     pushQuery.containedIn("device_id", friendListArray);
+
   } else {
-     var pushQuery = new Parse.Query(Parse.Installation);
      pushQuery.equalTo("device_id", recipients);
-     pushQuery.equalTo("deviceType", "android");
-     Parse.Push.send({
-     where: pushQuery,
-     data: {"title": senderId, "alert": sharedValue, "senderId": senderId},
-     }, { success: function() {
-        console.log("#### PUSH OK");
-     }, error: function(error) {
-        console.log("#### PUSH ERROR" + error.message);
-     }, useMasterKey: true});
-     response.success('success');
   }
+
+  Parse.Push.send({
+    where: pushQuery,
+    data: {"title": senderId, "alert": sharedValue, "senderId": senderId},
+  }, { success: function() {
+     console.log("#### PUSH OK");
+  }, error: function(error) {
+     console.log("#### PUSH ERROR" + error.message);
+  }, useMasterKey: true});
+  response.success('success');
 });
 
 
