@@ -8,9 +8,11 @@ var pushQuery = new Parse.Query(Parse.Installation);
 pushQuery.equalTo("deviceType", "android");
 pushQuery.equalTo("device_id", recipient);
 
+var payload = {"title": senderId, "alert": sharedValue};
+
   Parse.Push.send({
     where: pushQuery,
-    data: {"title": senderId, "alert": sharedValue},
+    data: payload,
   }, { success: function() {
      console.log("#### PUSH OK");
   }, error: function(error) {
