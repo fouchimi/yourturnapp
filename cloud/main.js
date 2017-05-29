@@ -11,22 +11,22 @@ pushQuery.equalTo("deviceType", "android");
 var payloadList = [];
 
 if(friendCount > 1) {
+
    var friendList = recipientList.split(',');
    var valueList = sharedValue.split(',');
-   var friendListArray = valueListArray =  [];
+
+   var friendListArray = [];
 
    for(var item in friendList) friendListArray.push(item);
 
-   for(var item in valueList) valueListArray.push(item);
-
-   for(int i= 0; i < valueListArray.length; i++) {
-     var currentPayload = {"title": senderId, "alert": valueListArray[i]};
+   for(var item in valueList) {
+     var currentPayload = {"title": senderId, "alert": item};
      payloadList.push(currentPayload);
    }
 
    pushQuery.containedIn("device_id", friendListArray);
 
-   valueListArray.forEach(function(listItem, index){
+   payloadList.forEach(function(payload, index){
 
      Parse.Push.send({
        where: pushQuery,
@@ -37,7 +37,7 @@ if(friendCount > 1) {
         console.log("#### PUSH ERROR" + error.message);
      }, useMasterKey: true});
      response.success('success');
-     
+
    });
 
 } else {
