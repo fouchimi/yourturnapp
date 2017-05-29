@@ -12,10 +12,10 @@ if(friendCount > 1) {
    var friendList = recipientList.split(',');
    var friendListArray = [];
 
-   for(var item in friendList) friendListArray.push(friendList[i]);
+   for(var item in friendList) friendListArray.push(item);
 
    pushQuery.containedIn("device_id", friendListArray);
-   
+
 } else pushQuery.equalTo("device_id", recipientList);
 
 var payload = {"title": senderId, "alert": sharedValue};
