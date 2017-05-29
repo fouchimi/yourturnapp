@@ -19,8 +19,8 @@ if(friendCount > 1) {
 
    for(var item in friendList) friendListArray.push(item);
 
-   for(var item in valueList) {
-     var currentPayload = {"title": senderId, "alert": item};
+   for(var value in valueList) {
+     var currentPayload = {"title": senderId, "alert": value};
      payloadList.push(currentPayload);
    }
 
