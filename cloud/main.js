@@ -14,12 +14,10 @@ Parse.Cloud.define('senderChannel', function(request, response) {
 
   if(friendCount > 1) {
 
-    var friendList = recipientList.split(',');
     var valueList = sharedValue.split(',');
-
     var friendListArray = [];
 
-    for(var item in friendList) friendListArray.push(friendList[item]);
+    for(var item in recipientList.split(',')) friendListArray.push(recipientList.split(',')[item]);
 
     for(var value in valueList) {
         var payload = {"title": senderId, "alert": value};
@@ -31,7 +29,6 @@ Parse.Cloud.define('senderChannel', function(request, response) {
     } else {
 
         pushQuery.equalTo("device_id", recipientList);
-        
         var payload = {"title": senderId, "alert": sharedValue};
         payloadList.push(payload);
    }
@@ -41,13 +38,13 @@ Parse.Cloud.define('senderChannel', function(request, response) {
       promises.push(sendPush(payload));
 
    });
-    
+
   Parse.Promise.when(promises).then(function(){
       console.log("All pushes have completed !!!");
-  });  
-        
+  });
+
    function sendPush(payloadMessage){
-       
+
        Parse.Push.send({
            where: pushQuery,
            data: payloadMessage,
@@ -58,7 +55,7 @@ Parse.Cloud.define('senderChannel', function(request, response) {
        }, useMasterKey: true});
 
        response.success('success');
-   }    
+   }
 
 });
 
