@@ -31,6 +31,7 @@ Parse.Cloud.define('senderChannel', function(request, response) {
     } else {
 
         pushQuery.equalTo("device_id", recipientList);
+        
         var payload = {"title": senderId, "alert": sharedValue};
         payloadList.push(payload);
    }
