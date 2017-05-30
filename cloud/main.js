@@ -1,83 +1,88 @@
 Parse.Cloud.define('senderChannel', function(request, response) {
+
   var params = request.params;
   var senderId = params.senderId;
   var sharedValue = params.sharedValueList;
   var recipientList = params.recipientList;
   var friendCount = params.friendCount;
 
-var pushQuery = new Parse.Query(Parse.Installation);
-pushQuery.equalTo("deviceType", "android");
+  var pushQuery = new Parse.Query(Parse.Installation);
+  pushQuery.equalTo("deviceType", "android");
 
-var payloadList = [];
+  var payloadList = [];
+  var promises = [];
 
-if(friendCount > 1) {
+  if(friendCount > 1) {
 
-   var friendList = recipientList.split(',');
-   var valueList = sharedValue.split(',');
+    var friendList = recipientList.split(',');
+    var valueList = sharedValue.split(',');
 
-   var friendListArray = [];
+    var friendListArray = [];
 
-   for(var item in friendList) friendListArray.push(item);
+    for(var item in friendList) {
+        friendListArray.push(item);
+    }
 
-   for(var value in valueList) {
-     var currentPayload = {"title": senderId, "alert": value};
-     payloadList.push(currentPayload);
+    for(var value in valueList) {
+        var payload = {"title": senderId, "alert": value};
+        payloadList.push(payload);
+    }
+
+    pushQuery.containedIn("device_id", friendListArray);
+
+    } else {
+
+        pushQuery.equalTo("device_id", recipientList);
+        var payload = {"title": senderId, "alert": sharedValue};
+        payloadList.push(payload);
    }
-
-   pushQuery.containedIn("device_id", friendListArray);
 
    payloadList.forEach(function(payload, index){
 
-     Parse.Push.send({
-       where: pushQuery,
-       data: payload,
-     }, { success: function() {
-        console.log("#### PUSH OK");
-     }, error: function(error) {
-        console.log("#### PUSH ERROR" + error.message);
-     }, useMasterKey: true});
-     response.success('success');
+      promises.push(sendPush(payload));
 
    });
+    
+  Parse.Promise.when(promises).then(function(){
+      console.log("All pushes have completed !!!");
+  });  
+        
+   function sendPush(payloadMessage){
+       
+       Parse.Push.send({
+           where: pushQuery,
+           data: payloadMessage,
+       }, { success: function() {
+           console.log("#### PUSH OK");
+       }, error: function(error) {
+           console.log("#### PUSH ERROR" + error.message);
+       }, useMasterKey: true});
 
-} else {
-
-  pushQuery.equalTo("device_id", recipientList);
-
-  var payload = {"title": senderId, "alert": sharedValue};
-
-      Parse.Push.send({
-        where: pushQuery,
-        data: payload,
-      }, { success: function() {
-         console.log("#### PUSH OK");
-      }, error: function(error) {
-         console.log("#### PUSH ERROR" + error.message);
-      }, useMasterKey: true});
-      response.success('success');
-  }
+       response.success('success');
+   }    
 
 });
 
 
 Parse.Cloud.define('receiverChannel', function(request, response) {
-  var params = request.params;
-  var targetId = params.targetId;
-  var recipientId = params.recipientId;
 
-  var replyQuery = new Parse.Query(Parse.Installation);
-  replyQuery.equalTo("deviceType", "android");
-  replyQuery.equalTo("device_id", targetId);
+    var params = request.params;
+    var targetId = params.targetId;
+    var recipientId = params.recipientId;
 
-  var payload = {"rec_id": recipientId, "sender_id": targetId};
+    var replyQuery = new Parse.Query(Parse.Installation);
+    replyQuery.equalTo("deviceType", "android");
+    replyQuery.equalTo("device_id", targetId);
 
-  Parse.Push.send({
-    where: replyQuery,
-    data : payload,
+    var payload = {"rec_id": recipientId, "sender_id": targetId};
+
+    Parse.Push.send({
+        where: replyQuery,
+        data : payload,
     }, { success: function(){
-       console.log("### PUSH REPLY OK");
+        console.log("### PUSH REPLY OK");
     }, error: function(error){
-       console.log("### PUSH REPLY ERROR" + error.message);
+        console.log("### PUSH REPLY ERROR" + error.message);
     }, useMasterKey: true });
 
     response.success('success');
