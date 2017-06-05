@@ -104,7 +104,7 @@ Parse.Cloud.define('groupChannel', function(request, response) {
     groupQuery.equalTo("deviceType", "android");
     groupQuery.containedIn("device_id", targetListArray);
 
-    var payload = {"sender_id": senderId};
+    var payload = {"senderId": senderId};
 
     Parse.Push.send({
         where: groupQuery,
