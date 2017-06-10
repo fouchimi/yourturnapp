@@ -120,3 +120,35 @@ Parse.Cloud.define('groupChannel', function(request, response) {
 
 });
 
+Parse.Cloud.define('ledgerChannel', function(request, response) {
+
+  var params = request.params;
+  var groupId = params.groupId;
+  var totalAmount = params.totalAmount;
+  var sharedValueList = params.sharedValueList;
+  var recipients = params.recipients;
+
+  var targetList = sharedValueList.split(',');
+  var targetListArray = [];
+
+  for(var item targetList) targetListArray.push(targetList[item]);
+
+  var ledgerQuery = new Parse.Query(Parse.Installation);
+  ledgerQuery.equalTo("deviceType", "android");
+  ledgerQuery.containedIn("device_id", targetListArray);
+
+  var payload = {"groupId":groupId, "sharedValue":sharedValueList, "recipients":recipients, "totalAmount":totalAmount};
+
+  Parse.Push.send({
+      where: ledgerQuery,
+      data : payload,
+  }, { success: function(){
+      console.log("### PUSH REPLY OK");
+  }, error: function(error){
+      console.log("### PUSH REPLY ERROR" + error.message);
+  }, useMasterKey: true });
+
+  response.success('success');
+
+});
+
