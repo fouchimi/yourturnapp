@@ -131,7 +131,7 @@ Parse.Cloud.define('ledgerChannel', function(request, response) {
   var targetList = sharedValueList.split(',');
   var targetListArray = [];
 
-  for(var item targetList) targetListArray.push(targetList[item]);
+  for(var item in targetList) targetListArray.push(targetList[item]);
 
   var ledgerQuery = new Parse.Query(Parse.Installation);
   ledgerQuery.equalTo("deviceType", "android");
