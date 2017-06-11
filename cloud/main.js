@@ -4,7 +4,6 @@ Parse.Cloud.define('senderChannel', function(request, response) {
   var senderId = params.senderId;
   var sharedValue = params.sharedValueList;
   var recipientList = params.recipientList;
-  var friendCount = params.friendCount;
 
   var pushQuery = new Parse.Query(Parse.Installation);
   pushQuery.equalTo("deviceType", "android");
@@ -12,7 +11,7 @@ Parse.Cloud.define('senderChannel', function(request, response) {
   var payloadList = [];
   var promises = [];
 
-  if(friendCount > 1) {
+  if(recipientList.indexOf(",") > -1) {
 
     var friendList = recipientList.split(',');
     var valueList = sharedValue.split(',');
