@@ -160,7 +160,7 @@ Parse.Cloud.define('ledgerChannel', function(request, response) {
 
 });
 
-Parse.Cloud.define('imageChannel', function(request, response) {
+Parse.Cloud.define('thumbnailChannel', function(request, response) {
 
   var params = request.params;
   var sender = params.sender;
