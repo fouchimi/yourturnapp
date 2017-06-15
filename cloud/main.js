@@ -93,7 +93,6 @@ Parse.Cloud.define('groupChannel', function(request, response) {
     var senderId = params.senderId;
     var targetIds = params.targetIds;
     var groupName = params.groupName;
-    var groupId = params.groupId;
 
 
     var groupQuery = new Parse.Query(Parse.Installation);
@@ -105,7 +104,7 @@ Parse.Cloud.define('groupChannel', function(request, response) {
 
       for(var item in targetList) targetListArray.push(targetList[item]);
       groupQuery.containedIn("device_id", targetListArray);
-      
+
     }else groupQuery.equalTo("device_id", targetIds);
 
     var payload = {"senderId":senderId, "groupName":groupName, "groupId":groupId, "targetIds":targetIds};
@@ -185,6 +184,41 @@ Parse.Cloud.define('thumbnailChannel', function(request, response) {
 
   Parse.Push.send({
       where: imageQuery,
+      data : payload,
+  }, { success: function(){
+      console.log("### PUSH REPLY OK");
+  }, error: function(error){
+      console.log("### PUSH REPLY ERROR" + error.message);
+  }, useMasterKey: true });
+
+  response.success('success');
+
+});
+
+Parse.Cloud.define('nameChannel', function(request, response) {
+
+  var params = request.params;
+  var senderId = params.senderId;
+  var name = params.name;
+  var friendIds = params.targetIds;
+
+  var nameQuery = new Parse.Query(Parse.Installation);
+  nameQuery.equalTo("deviceType", "android");
+
+  if(friendIds.indexOf(",") > -1) {
+    var targetList = friendIds.split(',');
+    var targetListArray = [];
+
+    for(var item in targetList) targetListArray.push(targetList[item]);
+    nameQuery.containedIn("device_id", targetListArray);
+  }else {
+    nameQuery.equalTo("device_id", friendIds);
+  }
+
+  var payload = {"senderId":senderId, "name": name};
+
+  Parse.Push.send({
+      where: nameQuery,
       data : payload,
   }, { success: function(){
       console.log("### PUSH REPLY OK");
