@@ -93,7 +93,7 @@ Parse.Cloud.define('groupChannel', function(request, response) {
     var senderId = params.senderId;
     var targetIds = params.targetIds;
     var groupName = params.groupName;
-
+    var groupId = params.groupId;
 
     var groupQuery = new Parse.Query(Parse.Installation);
     groupQuery.equalTo("deviceType", "android");
