@@ -23,14 +23,16 @@ if (!databaseUri) {
 var api = new ParseServer({
   databaseURI: databaseUri || 'mongodb://heroku_rl3t4f4m:vu5teqbva0er0kssjnrm31195k@ds143071.mlab.com:43071/heroku_rl3t4f4m',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
-  appId: process.env.APP_ID || '3L3nrFqVD2Ilg_6RXuMusgVba0_uARi6E',
-  masterKey: process.env.MASTER_KEY || 'sMVHq9lgSmQUtNxyEdsBJaUvZUkqB7eKg', //Add your master key here. Keep it secret!
+  appId: process.env.APP_ID || 'sMVHq9lgSmQUtNxyEdsBJaUvZUkqB7eKg',
+  masterKey: process.env.MASTER_KEY || '3L3nrFqVD2Ilg_6RXuMusgVba0_uARi6E', //Add your master key here. Keep it secret!
   serverURL: process.env.SERVER_URL || 'http://yourturnapp.herokuapp.com/parse',  // Don't forget to change to https if needed
   push: pushConfig,
   liveQuery: {
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
   }
 });
+//sMVHq9lgSmQUtNxyEdsBJaUvZUkqB7eKg
+//3L3nrFqVD2Ilg_6RXuMusgVba0_uARi6E
 // Client-keys like the javascript key or the .NET key are not necessary with parse-server
 // If you wish you require them, you can set them as options in the initialization above:
 // javascriptKey, restAPIKey, dotNetKey, clientKey
