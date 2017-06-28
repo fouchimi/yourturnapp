@@ -28,9 +28,7 @@ Parse.Cloud.define('senderChannel', function(request, response) {
     pushQuery.containedIn("device_id", friendListArray);
 
     } else {
-
         pushQuery.equalTo("device_id", recipientList);
-
         var payload = {"title": senderId, "alert": sharedValue};
         payloadList.push(payload);
    }
@@ -128,26 +126,28 @@ Parse.Cloud.define('ledgerChannel', function(request, response) {
 
   var params = request.params;
   var sender = params.sender;
-  var groupId = params.groupId;
+  var eventId = params.eventId;
+  var eventName = params.eventName;
   var totalAmount = params.totalAmount;
-  var sharedValueList = params.sharedValueList;
-  var friendIds = params.friendIds;
+  var sharedValue = params.sharedValue;
+  var targetIds = params.targetIds;
+  var eventUrl = params.eventUrl;
 
   var ledgerQuery = new Parse.Query(Parse.Installation);
   ledgerQuery.equalTo("deviceType", "android");
 
-  if(friendIds.indexOf(",") > -1) {
+  if(targetIds.indexOf(",") > -1) {
 
-    var targetList = friendIds.split(',');
+    var targetList = targetIds.split(',');
     var targetListArray = [];
 
     for(var item in targetList) targetListArray.push(targetList[item]);
     ledgerQuery.containedIn("device_id", targetListArray);
   } else {
-    ledgerQuery.equalTo("device_id", friendIds);
+    ledgerQuery.equalTo("device_id", targetIds);
   }
 
-  var payload = {"sender":sender, "groupId":groupId, "sharedValue":sharedValueList, "friendIds":friendIds, "totalAmount":totalAmount};
+  var payload = {"sender":sender, "eventId":eventId, "eventName":eventName, "eventUrl":eventUrl, "sharedValue":sharedValue, "targetIds":targetIds, "totalAmount":totalAmount};
 
   Parse.Push.send({
       where: ledgerQuery,
@@ -231,4 +231,3 @@ Parse.Cloud.define('nameChannel', function(request, response) {
   response.success('success');
 
 });
-
