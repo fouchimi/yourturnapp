@@ -2,8 +2,8 @@ Parse.Cloud.define('senderChannel', function(request, response) {
 
   var params = request.params;
   var senderId = params.senderId;
-  var sharedValue = params.sharedValueList;
-  var recipientList = params.recipientList;
+  var sharedValue = params.sharedValue;
+  var targetIds = params.targetIds;
 
   var pushQuery = new Parse.Query(Parse.Installation);
   pushQuery.equalTo("deviceType", "android");
@@ -11,24 +11,24 @@ Parse.Cloud.define('senderChannel', function(request, response) {
   var payloadList = [];
   var promises = [];
 
-  if(recipientList.indexOf(",") > -1) {
+  if(targetIds.indexOf(",") > -1) {
 
-    var friendList = recipientList.split(',');
+    var targetList = targetIds.split(',');
     var valueList = sharedValue.split(',');
 
-    var friendListArray = [];
+    var targetListArray = [];
 
-    for(var item in friendList) friendListArray.push(friendList[item]);
+    for(var item in friendList) targetListArray.push(targetList[item]);
 
     for(var value in valueList) {
         var payload = {"title": senderId, "alert": valueList[value]};
         payloadList.push(payload);
     }
 
-    pushQuery.containedIn("device_id", friendListArray);
+    pushQuery.containedIn("device_id", targetListArray);
 
     } else {
-        pushQuery.equalTo("device_id", recipientList);
+        pushQuery.equalTo("device_id", targetList);
         var payload = {"title": senderId, "alert": sharedValue};
         payloadList.push(payload);
    }
