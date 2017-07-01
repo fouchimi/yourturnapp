@@ -18,7 +18,7 @@ Parse.Cloud.define('senderChannel', function(request, response) {
 
     var targetListArray = [];
 
-    for(var item in friendList) targetListArray.push(targetList[item]);
+    for(var item in targetList) targetListArray.push(targetList[item]);
 
     for(var value in valueList) {
         var payload = {"title": senderId, "alert": valueList[value]};
