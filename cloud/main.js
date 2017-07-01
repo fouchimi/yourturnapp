@@ -40,7 +40,7 @@ Parse.Cloud.define('senderChannel', function(request, response) {
    });
 
   Parse.Promise.when(promises).then(function(){
-      console.log("All pushes have completed !!!");
+      console.log("sending pushes on target devices ...");
   });
 
    function sendPush(payloadMessage){
