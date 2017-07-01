@@ -126,12 +126,10 @@ Parse.Cloud.define('ledgerChannel', function(request, response) {
   var params = request.params;
   var sender = params.sender;
   var eventId = params.eventId;
-  var eventName = params.eventName;
   var totalAmount = params.totalAmount;
   var requestValue = params.requestValue;
   var sharedValue = params.sharedValue;
   var targetIds = params.targetIds;
-  var eventUrl = params.eventUrl;
 
   var ledgerQuery = new Parse.Query(Parse.Installation);
   ledgerQuery.equalTo("deviceType", "android");
@@ -147,7 +145,7 @@ Parse.Cloud.define('ledgerChannel', function(request, response) {
     ledgerQuery.equalTo("device_id", targetIds);
   }
 
-  var payload = {"sender":sender, "eventId":eventId, "eventName":eventName, "eventUrl":eventUrl, "requestValue":requestValue, "sharedValue":sharedValue, "targetIds":targetIds, "totalAmount":totalAmount};
+  var payload = {"sender":sender, "eventId":eventId, "requestValue":requestValue, "sharedValue":sharedValue, "targetIds":targetIds, "totalAmount":totalAmount};
 
   Parse.Push.send({
       where: ledgerQuery,
