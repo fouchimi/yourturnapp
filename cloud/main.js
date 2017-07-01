@@ -85,31 +85,31 @@ Parse.Cloud.define('receiverChannel', function(request, response) {
 
 });
 
-Parse.Cloud.define('groupChannel', function(request, response) {
+Parse.Cloud.define('eventChannel', function(request, response) {
 
     var params = request.params;
     var senderId = params.senderId;
     var targetIds = params.targetIds;
-    var groupName = params.groupName;
-    var groupId = params.groupId;
-    var groupUrl = params.groupUrl;
+    var eventName = params.eventName;
+    var eventId = params.eventId;
+    var eventUrl = params.eventUrl;
 
-    var groupQuery = new Parse.Query(Parse.Installation);
-    groupQuery.equalTo("deviceType", "android");
+    var eventQuery = new Parse.Query(Parse.Installation);
+    eventQuery.equalTo("deviceType", "android");
 
     if(targetIds.indexOf(",") > -1){
       var targetList = targetIds.split(',');
       var targetListArray = [];
 
       for(var item in targetList) targetListArray.push(targetList[item]);
-      groupQuery.containedIn("device_id", targetListArray);
+      eventQuery.containedIn("device_id", targetListArray);
 
-    }else groupQuery.equalTo("device_id", targetIds);
+    }else eventQuery.equalTo("device_id", targetIds);
 
-    var payload = {"senderId":senderId, "groupName":groupName, "groupId":groupId, "targetIds":targetIds, "groupUrl":groupUrl};
+    var payload = {"senderId":senderId, "eventName":eventName, "eventId":eventId, "targetIds":targetIds, "eventUrl":eventUrl};
 
     Parse.Push.send({
-        where: groupQuery,
+        where: eventQuery,
         data : payload,
     }, { success: function(){
         console.log("### PUSH REPLY OK");
