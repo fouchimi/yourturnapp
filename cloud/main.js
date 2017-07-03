@@ -163,24 +163,24 @@ Parse.Cloud.define('ledgerChannel', function(request, response) {
 Parse.Cloud.define('thumbnailChannel', function(request, response) {
 
   var params = request.params;
-  var sender = params.sender;
-  var url = params.url;
-  var friendIds = params.friends;
+  var sender = params.senderId;
+  var profileUrl = params.profileUrl;
+  var targetIds = params.targetIds;
 
   var imageQuery = new Parse.Query(Parse.Installation);
   imageQuery.equalTo("deviceType", "android");
 
-  if(friendIds.indexOf(",") > -1) {
-    var targetList = friendIds.split(',');
+  if(targetIds.indexOf(",") > -1) {
+    var targetList = targetIds.split(',');
     var targetListArray = [];
 
     for(var item in targetList) targetListArray.push(targetList[item]);
     imageQuery.containedIn("device_id", targetListArray);
   }else {
-    imageQuery.equalTo("device_id", friendIds);
+    imageQuery.equalTo("device_id", targetIds);
   }
 
-  var payload = {"sender":sender, "imageUrl": url};
+  var payload = {"senderId":sender, "profileUrl": profileUrl};
 
   Parse.Push.send({
       where: imageQuery,
