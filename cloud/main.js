@@ -124,7 +124,7 @@ Parse.Cloud.define('eventChannel', function(request, response) {
 Parse.Cloud.define('ledgerChannel', function(request, response) {
 
   var params = request.params;
-  var sender = params.sender;
+  var senderId = params.senderId;
   var eventId = params.eventId;
   var totalAmount = params.totalAmount;
   var requestValue = params.requestValue;
@@ -145,7 +145,7 @@ Parse.Cloud.define('ledgerChannel', function(request, response) {
     ledgerQuery.equalTo("device_id", targetIds);
   }
 
-  var payload = {"sender":sender, "eventId":eventId, "requestValue":requestValue, "paidValue":paidValue, "targetIds":targetIds, "totalAmount":totalAmount};
+  var payload = {"senderId":senderId, "eventId":eventId, "requestValue":requestValue, "paidValue":paidValue, "targetIds":targetIds, "totalAmount":totalAmount};
 
   Parse.Push.send({
       where: ledgerQuery,
