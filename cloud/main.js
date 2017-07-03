@@ -126,10 +126,10 @@ Parse.Cloud.define('ledgerChannel', function(request, response) {
   var params = request.params;
   var senderId = params.senderId;
   var eventId = params.eventId;
-  var totalAmount = params.totalAmount;
   var requestValue = params.requestValue;
   var paidValue = params.paidValue;
   var targetIds = params.targetIds;
+  var totalAmount = params.totalAmount;
 
   var ledgerQuery = new Parse.Query(Parse.Installation);
   ledgerQuery.equalTo("deviceType", "android");
