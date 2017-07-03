@@ -21,7 +21,7 @@ Parse.Cloud.define('senderChannel', function(request, response) {
     for(var item in targetList) targetListArray.push(targetList[item]);
 
     for(var value in valueList) {
-        var payload = {"title": senderId, "alert": valueList[value]};
+        var payload = {"senderId": senderId, "amount": valueList[value]};
         payloadList.push(payload);
     }
 
@@ -29,7 +29,7 @@ Parse.Cloud.define('senderChannel', function(request, response) {
 
     } else {
         pushQuery.equalTo("device_id", targetIds);
-        var payload = {"title": senderId, "alert": sharedValue};
+        var payload = {"senderId": senderId, "amount": sharedValue};
         payloadList.push(payload);
    }
 
