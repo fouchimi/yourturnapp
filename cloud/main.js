@@ -255,5 +255,4 @@ Parse.Cloud.define('messageChannel', function(request, response) {
   }, useMasterKey: true });
 
   response.success('success');
-
 });
