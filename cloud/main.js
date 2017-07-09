@@ -234,16 +234,16 @@ Parse.Cloud.define('messageChannel', function(request, response) {
 
   var params = request.params;
   var senderId = params.senderId;
-  var receiverId = params.receiverId;
+  var targetId = params.targetId;
   var message = params.message;
   var createdAt = params.createdAt;
   var updatedAt = params.updatedAt;
 
   var messageQuery = new Parse.Query(Parse.Installation);
   messageQuery.equalTo("deviceType", "android");
-  messageQuery.equalTo("device_id", receiverId);
+  messageQuery.equalTo("device_id", targetId);
 
-  var payload = {"senderId":senderId, "receiverId": receiverId, "message": message, "createdAt": createdAt, "updatedAt":updatedAt};
+  var payload = {"senderId":senderId, "targetId": targetId, "message": message, "createdAt": createdAt, "updatedAt":updatedAt};
 
   Parse.Push.send({
       where: messageQuery,
