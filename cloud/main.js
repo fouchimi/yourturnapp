@@ -229,3 +229,31 @@ Parse.Cloud.define('nameChannel', function(request, response) {
   response.success('success');
 
 });
+
+Parse.Cloud.define('messageChannel', function(request, response) {
+
+  var params = request.params;
+  var senderId = params.senderId;
+  var receiverId = params.receiverId;
+  var message = params.message;
+  var createdAt = params.createdAt;
+  var updatedAt = params.updatedAt;
+
+  var messageQuery = new Parse.Query(Parse.Installation);
+  messageQuery.equalTo("deviceType", "android");
+  messageQuery.equalTo("device_id", receiverId);
+
+  var payload = {"senderId":senderId, "receiverId": receiverId, "message": message, "createdAt": createdAt, "updatedAt":updatedAt};
+
+  Parse.Push.send({
+      where: messageQuery,
+      data : payload,
+  }, { success: function(){
+      console.log("### PUSH REPLY OK");
+  }, error: function(error){
+      console.log("### PUSH REPLY ERROR" + error.message);
+  }, useMasterKey: true });
+
+  response.success('success');
+
+});
