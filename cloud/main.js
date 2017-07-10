@@ -113,7 +113,7 @@ Parse.Cloud.define('eventChannel', function(request, response) {
     Parse.Push.send({
         where: eventQuery,
         data : payload,
-        channelName : "eventChannel";
+        channelName : "eventChannel",
     }, { success: function(){
         console.log("### PUSH REPLY OK");
     }, error: function(error){
