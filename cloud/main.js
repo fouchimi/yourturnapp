@@ -47,6 +47,7 @@ Parse.Cloud.define('senderChannel', function(request, response) {
 
        Parse.Push.send({
            where: pushQuery,
+           channels : "senderChannel",
            data: payloadMessage,
        }, { success: function() {
            console.log("#### PUSH OK");
@@ -75,6 +76,7 @@ Parse.Cloud.define('receiverChannel', function(request, response) {
     Parse.Push.send({
         where: replyQuery,
         data : payload,
+        channels : "receiverChannel",
     }, { success: function(){
         console.log("### PUSH REPLY OK");
     }, error: function(error){
@@ -111,6 +113,7 @@ Parse.Cloud.define('eventChannel', function(request, response) {
     Parse.Push.send({
         where: eventQuery,
         data : payload,
+        channels : "eventChannel",
     }, { success: function(){
         console.log("### PUSH REPLY OK");
     }, error: function(error){
@@ -150,6 +153,7 @@ Parse.Cloud.define('ledgerChannel', function(request, response) {
   Parse.Push.send({
       where: ledgerQuery,
       data : payload,
+      channels : "ledgerChannel",
   }, { success: function(){
       console.log("### PUSH REPLY OK");
   }, error: function(error){
@@ -185,6 +189,7 @@ Parse.Cloud.define('thumbnailChannel', function(request, response) {
   Parse.Push.send({
       where: imageQuery,
       data : payload,
+      channels : "thumbnailChannel",
   }, { success: function(){
       console.log("### PUSH REPLY OK");
   }, error: function(error){
@@ -220,6 +225,7 @@ Parse.Cloud.define('nameChannel', function(request, response) {
   Parse.Push.send({
       where: nameQuery,
       data : payload,
+      channels : "nameChannel",
   }, { success: function(){
       console.log("### PUSH REPLY OK");
   }, error: function(error){
@@ -248,6 +254,7 @@ Parse.Cloud.define('messageChannel', function(request, response) {
   Parse.Push.send({
       where: messageQuery,
       data : payload,
+      channels : "messageChannel",
   }, { success: function(){
       console.log("### PUSH REPLY OK");
   }, error: function(error){
@@ -276,6 +283,7 @@ Parse.Cloud.define('offlineChannel', function(request, response) {
 
   Parse.Push.send({
       where: messageQuery,
+      channels : "offlineChannel",
       data : payload,
   }, { success: function(){
       console.log("### PUSH REPLY OK");
