@@ -265,7 +265,6 @@ Parse.Cloud.define('offlineChannel', function(request, response) {
   var targetId = params.targetId;
   var message = params.message;
   var status = params.status;
-  var resetCounter = params.resetCounter;
   var createdAt = params.createdAt;
   var updatedAt = params.updatedAt;
 
@@ -273,13 +272,8 @@ Parse.Cloud.define('offlineChannel', function(request, response) {
   messageQuery.equalTo("deviceType", "android");
   messageQuery.equalTo("device_id", targetId);
 
-  var payload = {};
-  if(resetCounter){
-    payload = {"resetCounter": true};
-  }else {
-    payload = {"senderId":senderId, "targetId": targetId, "message": message, "status":status, "createdAt": createdAt, "updatedAt":updatedAt};
-  }
-
+  var payload = payload = {"senderId":senderId, "targetId": targetId, "message": message, "status":status, "createdAt": createdAt, "updatedAt":updatedAt};
+  
   Parse.Push.send({
       where: messageQuery,
       data : payload,
