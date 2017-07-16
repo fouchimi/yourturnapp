@@ -293,3 +293,28 @@ Parse.Cloud.define('offlineChannel', function(request, response) {
   response.success('success');
 
 });
+
+Parse.Cloud.define('handShakeChannel', function(request, response) {
+
+  var params = request.params;
+  var connectedStatus = params.connectedStatus;
+  var targetId = params.targetId;
+
+  var onlineQuery = new Parse.Query(Parse.Installation);
+  onlineQuery.equalTo("deviceType", "android");
+  onlineQuery.equalTo("device_id", targetId);
+
+  var payload = {"connectedStatus" : connectedStatus, "targetId" : targetId};
+
+  Parse.Push.send({
+      where: onlineQuery,
+      data : payload,
+  }, { success: function(){
+      console.log("### PUSH REPLY OK");
+  }, error: function(error){
+      console.log("### PUSH REPLY ERROR" + error.message);
+  }, useMasterKey: true });
+
+  response.success('success');
+
+});
