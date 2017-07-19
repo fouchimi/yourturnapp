@@ -93,6 +93,8 @@ Parse.Cloud.define('eventChannel', function(request, response) {
     var eventName = params.eventName;
     var eventId = params.eventId;
     var eventUrl = params.eventUrl;
+    var scoreList = params.scoreList;
+    var senderScore = params.senderScore;
 
     var eventQuery = new Parse.Query(Parse.Installation);
     eventQuery.equalTo("deviceType", "android");
@@ -106,7 +108,7 @@ Parse.Cloud.define('eventChannel', function(request, response) {
 
     }else eventQuery.equalTo("device_id", targetIds);
 
-    var payload = {"senderId":senderId, "eventName":eventName, "eventId":eventId, "targetIds":targetIds, "eventUrl":eventUrl};
+    var payload = {"senderId":senderId, "eventName":eventName, "eventId":eventId, "targetIds":targetIds, "eventUrl":eventUrl, "senderScore":senderScore, "scoreList":scoreList};
 
     Parse.Push.send({
         where: eventQuery,
